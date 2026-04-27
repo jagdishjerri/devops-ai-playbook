@@ -227,22 +227,28 @@
         <!-- 9. Gateway -> User Service -->
         <line x1="460" y1="228" x2="510" y2="410" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
 
-        <!-- 10. Auth -> PostgreSQL (DB queries) -->
-        <line x1="610" y1="205" x2="680" y2="280" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
+        <!-- 10. Auth -> PostgreSQL (auth_db) -->
+        <line x1="610" y1="205" x2="670" y2="280" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
 
-        <!-- 10. Orders -> PostgreSQL -->
-        <line x1="610" y1="365" x2="680" y2="300" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
+        <!-- 10b. Product Service -> PostgreSQL (products_db) -->
+        <line x1="610" y1="265" x2="670" y2="285" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
 
-        <!-- 10. User Service -> PostgreSQL -->
-        <line x1="610" y1="415" x2="680" y2="310" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
+        <!-- 10c. Order Service -> PostgreSQL (orders_db) -->
+        <line x1="610" y1="315" x2="670" y2="295" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
+
+        <!-- 10d. Orders -> PostgreSQL (orders_db) -->
+        <line x1="610" y1="365" x2="670" y2="300" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
+
+        <!-- 10e. User Service -> PostgreSQL (users_db) -->
+        <line x1="610" y1="415" x2="670" y2="310" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
 
         <!-- 11. All services -> Prometheus (ServiceMonitor scrape) - dashed -->
-        <path d="M 560 440 L 560 460 Q 560 470 570 470 L 810 470 Q 820 470 820 480 L 820 490" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3"/>
-        <text x="680" y="466" fill="#34d399" font-size="6">/metrics scrape (15s)</text>
+        <path d="M 560 440 L 560 460 Q 560 470 570 470 L 830 470 Q 840 470 840 480 L 840 490" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="690" y="466" fill="#34d399" font-size="6">/metrics scrape (15s)</text>
 
         <!-- 12. Prometheus -> Grafana (datasource) -->
-        <line x1="870" y1="510" x2="920" y2="510" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
-        <text x="895" y="504" fill="#34d399" font-size="6">data</text>
+        <line x1="888" y1="510" x2="896" y2="510" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="880" y="504" fill="#34d399" font-size="6">data</text>
 
         <!-- 13. Fluent Bit -> CloudWatch (pod logs) -->
         <line x1="310" y1="610" x2="430" y2="610" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
@@ -252,8 +258,8 @@
         <line x1="560" y1="620" x2="640" y2="660" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
 
         <!-- 15. Prometheus -> Lambda (fetch_metrics) -->
-        <path d="M 830 530 L 830 560 Q 830 570 820 570 L 720 570 Q 710 570 710 580 L 710 648" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-emerald)"/>
-        <text x="770" y="566" fill="#34d399" font-size="6">metrics</text>
+        <path d="M 848 530 L 848 560 Q 848 570 838 570 L 720 570 Q 710 570 710 580 L 710 648" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-emerald)"/>
+        <text x="780" y="566" fill="#34d399" font-size="6">PromQL</text>
 
         <!-- 16. Lambda -> Bedrock Agent (evidence) -->
         <line x1="740" y1="680" x2="800" y2="680" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
@@ -266,6 +272,13 @@
         <!-- Terraform -> AWS Region boundary -->
         <line x1="75" y1="460" x2="170" y2="460" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arrowhead-amber)"/>
         <text x="110" y="454" fill="#fbbf24" font-size="6">provisions</text>
+
+        <!-- 18. EKS -> Lambda (fetch_health queries EKS API) -->
+        <path d="M 560 155 L 560 145 Q 560 140 570 140 L 640 140 Q 650 140 650 150 L 650 560 Q 650 570 660 570 L 660 648" fill="none" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-amber)"/>
+        <text x="656" y="560" fill="#fbbf24" font-size="6" transform="rotate(-90, 656, 560)">EKS API</text>
+
+        <!-- 19. Prometheus -> Alertmanager (alerts) -->
+        <line x1="888" y1="510" x2="984" y2="510" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3"/>
 
         <!-- =================================================================
              LEFT SIDE - CI/CD Pipeline (External to AWS)
@@ -296,7 +309,7 @@
         <rect x="20" y="440" width="110" height="50" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
         <text x="75" y="460" fill="white" font-size="11" font-weight="600" text-anchor="middle">Terraform</text>
         <text x="75" y="474" fill="#94a3b8" font-size="8" text-anchor="middle">IaC Provisioning</text>
-        <text x="75" y="485" fill="#fbbf24" font-size="6" text-anchor="middle">VPC · EKS · ECR · ArgoCD</text>
+        <text x="75" y="485" fill="#fbbf24" font-size="6" text-anchor="middle">VPC · EKS · ECR · ArgoCD · Mon</text>
 
         <!-- =================================================================
              AWS REGION BOUNDARY
@@ -317,19 +330,19 @@
              EKS CLUSTER BOUNDARY (dashed emerald/green)
              ================================================================= -->
         <rect x="195" y="135" width="870" height="400" rx="10" fill="rgba(52, 211, 153, 0.03)" stroke="#34d399" stroke-width="1" stroke-dasharray="6,4"/>
-        <text x="210" y="152" fill="#34d399" font-size="9" font-weight="600">EKS Cluster: boutique-cluster</text>
+        <text x="210" y="152" fill="#34d399" font-size="9" font-weight="600">EKS Cluster: eks-cluster</text>
 
         <!-- =================================================================
              BOUTIQUE NAMESPACE
              ================================================================= -->
-        <rect x="210" y="160" width="580" height="290" rx="8" fill="rgba(30, 41, 59, 0.15)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <rect x="210" y="160" width="590" height="290" rx="8" fill="rgba(30, 41, 59, 0.15)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4,4"/>
         <text x="222" y="175" fill="#94a3b8" font-size="8" font-weight="500">namespace: boutique</text>
 
         <!-- Frontend -->
         <rect x="225" y="188" width="85" height="48" rx="6" fill="#0f172a"/>
         <rect x="225" y="188" width="85" height="48" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
         <text x="267" y="207" fill="white" font-size="10" font-weight="600" text-anchor="middle">Frontend</text>
-        <text x="267" y="220" fill="#94a3b8" font-size="7" text-anchor="middle">React :3000</text>
+        <text x="267" y="220" fill="#94a3b8" font-size="7" text-anchor="middle">Nginx/React :3000</text>
         <text x="267" y="231" fill="#22d3ee" font-size="6" text-anchor="middle">Deployment</text>
 
         <!-- Gateway -->
@@ -371,31 +384,38 @@
         <text x="560" y="429" fill="#94a3b8" font-size="7" text-anchor="middle">:3006</text>
 
         <!-- PostgreSQL -->
-        <rect x="680" y="270" width="100" height="55" rx="6" fill="#0f172a"/>
-        <rect x="680" y="270" width="100" height="55" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <rect x="670" y="270" width="120" height="55" rx="6" fill="#0f172a"/>
+        <rect x="670" y="270" width="120" height="55" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
         <text x="730" y="290" fill="white" font-size="10" font-weight="600" text-anchor="middle">PostgreSQL</text>
         <text x="730" y="303" fill="#94a3b8" font-size="7" text-anchor="middle">StatefulSet :5432</text>
-        <text x="730" y="318" fill="#a78bfa" font-size="6" text-anchor="middle">boutique_db</text>
+        <text x="730" y="318" fill="#a78bfa" font-size="6" text-anchor="middle">auth · products · orders · users</text>
 
         <!-- =================================================================
              MONITORING NAMESPACE
              ================================================================= -->
-        <rect x="800" y="470" width="250" height="70" rx="8" fill="rgba(30, 41, 59, 0.15)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4,4"/>
-        <text x="812" y="484" fill="#94a3b8" font-size="8" font-weight="500">namespace: monitoring</text>
+        <rect x="800" y="470" width="260" height="70" rx="8" fill="rgba(30, 41, 59, 0.15)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <text x="812" y="484" fill="#94a3b8" font-size="8" font-weight="500">namespace: monitoring (kube-prometheus-stack)</text>
 
         <!-- Prometheus -->
-        <rect x="810" y="490" width="100" height="42" rx="6" fill="#0f172a"/>
-        <rect x="810" y="490" width="100" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
-        <text x="860" y="507" fill="white" font-size="10" font-weight="600" text-anchor="middle">Prometheus</text>
-        <text x="860" y="520" fill="#94a3b8" font-size="7" text-anchor="middle">scrape /metrics</text>
-        <text x="860" y="529" fill="#34d399" font-size="6" text-anchor="middle">every 15s</text>
+        <rect x="808" y="490" width="80" height="42" rx="6" fill="#0f172a"/>
+        <rect x="808" y="490" width="80" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="848" y="507" fill="white" font-size="9" font-weight="600" text-anchor="middle">Prometheus</text>
+        <text x="848" y="520" fill="#94a3b8" font-size="6" text-anchor="middle">/metrics 15s</text>
+        <text x="848" y="529" fill="#34d399" font-size="6" text-anchor="middle">scrape</text>
 
         <!-- Grafana -->
-        <rect x="930" y="490" width="100" height="42" rx="6" fill="#0f172a"/>
-        <rect x="930" y="490" width="100" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
-        <text x="980" y="507" fill="white" font-size="10" font-weight="600" text-anchor="middle">Grafana</text>
-        <text x="980" y="520" fill="#94a3b8" font-size="7" text-anchor="middle">dashboards</text>
-        <text x="980" y="529" fill="#34d399" font-size="6" text-anchor="middle">visualization</text>
+        <rect x="896" y="490" width="80" height="42" rx="6" fill="#0f172a"/>
+        <rect x="896" y="490" width="80" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="936" y="507" fill="white" font-size="9" font-weight="600" text-anchor="middle">Grafana</text>
+        <text x="936" y="520" fill="#94a3b8" font-size="6" text-anchor="middle">dashboards</text>
+        <text x="936" y="529" fill="#34d399" font-size="6" text-anchor="middle">visualization</text>
+
+        <!-- Alertmanager -->
+        <rect x="984" y="490" width="68" height="42" rx="6" fill="#0f172a"/>
+        <rect x="984" y="490" width="68" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="1018" y="507" fill="white" font-size="8" font-weight="600" text-anchor="middle">Alert</text>
+        <text x="1018" y="518" fill="white" font-size="8" font-weight="600" text-anchor="middle">manager</text>
+        <text x="1018" y="529" fill="#34d399" font-size="6" text-anchor="middle">alerts</text>
 
         <!-- =================================================================
              ARGOCD NAMESPACE
@@ -507,11 +527,12 @@
           <h3>Observability Stack</h3>
         </div>
         <ul>
-          <li>• Prometheus + Grafana monitoring</li>
+          <li>• Prometheus + Grafana + Alertmanager</li>
           <li>• ServiceMonitor scraping every 15s</li>
           <li>• Fluent Bit DaemonSet log forwarding</li>
           <li>• CloudWatch /eks/boutique/pods log group</li>
           <li>• Pre-loaded Grafana dashboards</li>
+          <li>• Deployed via kube-prometheus-stack Helm</li>
         </ul>
       </div>
 
@@ -523,9 +544,25 @@
         <ul>
           <li>• AWS Bedrock Agent for analysis</li>
           <li>• 3 Lambda tools: logs, metrics, health</li>
+          <li>• fetch_health queries EKS API + Prometheus</li>
+          <li>• fetch_metrics runs PromQL range queries</li>
           <li>• Streamlit chat UI for engineers</li>
-          <li>• Automated root cause analysis</li>
           <li>• Evidence-backed diagnosis &amp; fixes</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot rose"></div>
+          <h3>Infrastructure (Terraform)</h3>
+        </div>
+        <ul>
+          <li>• VPC with 3 public subnets (us-east-1a/b/c)</li>
+          <li>• EKS cluster (eks-cluster) v1.34</li>
+          <li>• Node group: m7i-flex.large (1–2 ON_DEMAND)</li>
+          <li>• ECR: 7 repos with scan-on-push</li>
+          <li>• ArgoCD + kube-prometheus-stack via Helm</li>
+          <li>• EBS CSI driver for persistent volumes</li>
         </ul>
       </div>
     </div>
