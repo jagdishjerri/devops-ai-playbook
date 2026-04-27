@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOps + AIOps Boutique Microservices Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      min-height: 100vh;
+      padding: 2rem;
+      color: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 2rem;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .pulse-dot {
+      width: 12px;
+      height: 12px;
+      background: #22d3ee;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .subtitle {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      margin-left: 1.75rem;
+    }
+
+    .diagram-container {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 1rem;
+      border: 1px solid #1e293b;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+
+    svg {
+      width: 100%;
+      min-width: 1000px;
+      display: block;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 0.75rem;
+      border: 1px solid #1e293b;
+      padding: 1.25rem;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .card-dot.cyan { background: #22d3ee; }
+    .card-dot.emerald { background: #34d399; }
+    .card-dot.violet { background: #a78bfa; }
+    .card-dot.amber { background: #fbbf24; }
+    .card-dot.rose { background: #fb7185; }
+
+    .card h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .card ul {
+      list-style: none;
+      color: #94a3b8;
+      font-size: 0.75rem;
+    }
+
+    .card li {
+      margin-bottom: 0.375rem;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #475569;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>DevOps + AIOps Boutique Microservices Architecture</h1>
+      </div>
+      <p class="subtitle">End-to-end CI/CD, GitOps, Observability &amp; AI-powered Root Cause Analysis on AWS EKS</p>
+    </div>
+
+    <!-- Main Diagram -->
+    <div class="diagram-container">
+      <svg viewBox="0 0 1100 820">
+        <!-- Definitions -->
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+          </marker>
+          <marker id="arrowhead-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee" />
+          </marker>
+          <marker id="arrowhead-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#34d399" />
+          </marker>
+          <marker id="arrowhead-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24" />
+          </marker>
+          <marker id="arrowhead-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#a78bfa" />
+          </marker>
+          <marker id="arrowhead-rose" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fb7185" />
+          </marker>
+          <marker id="arrowhead-slate" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background Grid -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- =================================================================
+             CONNECTION ARROWS (drawn first for z-order, behind components)
+             ================================================================= -->
+
+        <!-- 1. Developer -> GitHub (git push) -->
+        <line x1="75" y1="95" x2="75" y2="148" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowhead-slate)"/>
+        <text x="88" y="126" fill="#94a3b8" font-size="7">git push</text>
+
+        <!-- 2. GitHub -> GitHub Actions (triggers CI) -->
+        <line x1="75" y1="208" x2="75" y2="258" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowhead-slate)"/>
+        <text x="88" y="238" fill="#94a3b8" font-size="7">triggers CI</text>
+
+        <!-- 3. GitHub Actions -> ECR (docker push) -->
+        <line x1="130" y1="290" x2="218" y2="90" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+        <text x="165" y="178" fill="#fbbf24" font-size="7" transform="rotate(-55, 165, 178)">docker push</text>
+
+        <!-- 4. GitHub Actions -> GitHub (commits image tags back) -->
+        <line x1="55" y1="260" x2="55" y2="210" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-slate)"/>
+        <text x="6" y="238" fill="#94a3b8" font-size="6">tags back</text>
+
+        <!-- 5. ArgoCD -> GitHub (polls for changes) - dashed -->
+        <path d="M 218 490 L 140 490 Q 120 490 120 470 L 120 210 Q 120 190 100 190 L 95 190" fill="none" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arrowhead-amber)"/>
+        <text x="130" y="350" fill="#fbbf24" font-size="7" transform="rotate(-90, 130, 350)">polls main branch</text>
+
+        <!-- 6. ArgoCD -> EKS services (rolling deploy) - goes right into cluster -->
+        <line x1="310" y1="490" x2="380" y2="400" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+        <text x="355" y="455" fill="#fbbf24" font-size="7" transform="rotate(-50, 355, 455)">deploy</text>
+
+        <!-- 7. ECR -> EKS (image pull) -->
+        <line x1="310" y1="90" x2="400" y2="155" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+        <text x="345" y="115" fill="#fbbf24" font-size="7">image pull</text>
+
+        <!-- 8. Frontend -> Gateway (REST API) -->
+        <line x1="310" y1="210" x2="370" y2="210" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="340" y="204" fill="#22d3ee" font-size="7">REST</text>
+
+        <!-- 9. Gateway -> Auth -->
+        <line x1="460" y1="200" x2="510" y2="200" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+
+        <!-- 9. Gateway -> Product Service -->
+        <line x1="460" y1="215" x2="510" y2="260" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+
+        <!-- 9. Gateway -> Order Service -->
+        <line x1="460" y1="220" x2="510" y2="310" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+
+        <!-- 9. Gateway -> Orders -->
+        <line x1="460" y1="225" x2="510" y2="360" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+
+        <!-- 9. Gateway -> User Service -->
+        <line x1="460" y1="228" x2="510" y2="410" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+
+        <!-- 10. Auth -> PostgreSQL (DB queries) -->
+        <line x1="610" y1="205" x2="680" y2="280" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
+
+        <!-- 10. Orders -> PostgreSQL -->
+        <line x1="610" y1="365" x2="680" y2="300" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
+
+        <!-- 10. User Service -> PostgreSQL -->
+        <line x1="610" y1="415" x2="680" y2="310" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-violet)"/>
+
+        <!-- 11. All services -> Prometheus (ServiceMonitor scrape) - dashed -->
+        <path d="M 560 440 L 560 460 Q 560 470 570 470 L 810 470 Q 820 470 820 480 L 820 490" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="680" y="466" fill="#34d399" font-size="6">/metrics scrape (15s)</text>
+
+        <!-- 12. Prometheus -> Grafana (datasource) -->
+        <line x1="870" y1="510" x2="920" y2="510" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead-emerald)"/>
+        <text x="895" y="504" fill="#34d399" font-size="6">data</text>
+
+        <!-- 13. Fluent Bit -> CloudWatch (pod logs) -->
+        <line x1="310" y1="610" x2="430" y2="610" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+        <text x="370" y="604" fill="#fbbf24" font-size="7">pod logs</text>
+
+        <!-- 14. CloudWatch -> Lambda (fetch_logs) -->
+        <line x1="560" y1="620" x2="640" y2="660" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+
+        <!-- 15. Prometheus -> Lambda (fetch_metrics) -->
+        <path d="M 830 530 L 830 560 Q 830 570 820 570 L 720 570 Q 710 570 710 580 L 710 648" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowhead-emerald)"/>
+        <text x="770" y="566" fill="#34d399" font-size="6">metrics</text>
+
+        <!-- 16. Lambda -> Bedrock Agent (evidence) -->
+        <line x1="740" y1="680" x2="800" y2="680" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead-amber)"/>
+        <text x="770" y="674" fill="#fbbf24" font-size="6">evidence</text>
+
+        <!-- 17. Bedrock -> Streamlit UI (root cause + fix) -->
+        <line x1="920" y1="680" x2="960" y2="680" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="940" y="670" fill="#22d3ee" font-size="6">RCA</text>
+
+        <!-- Terraform -> AWS Region boundary -->
+        <line x1="75" y1="460" x2="170" y2="460" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arrowhead-amber)"/>
+        <text x="110" y="454" fill="#fbbf24" font-size="6">provisions</text>
+
+        <!-- =================================================================
+             LEFT SIDE - CI/CD Pipeline (External to AWS)
+             ================================================================= -->
+
+        <!-- Developer -->
+        <rect x="25" y="50" width="100" height="45" rx="6" fill="#0f172a"/>
+        <rect x="25" y="50" width="100" height="45" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="75" y="70" fill="white" font-size="11" font-weight="600" text-anchor="middle">Developer</text>
+        <text x="75" y="84" fill="#94a3b8" font-size="8" text-anchor="middle">writes code</text>
+
+        <!-- GitHub -->
+        <rect x="25" y="150" width="100" height="58" rx="6" fill="#0f172a"/>
+        <rect x="25" y="150" width="100" height="58" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="75" y="172" fill="white" font-size="11" font-weight="600" text-anchor="middle">GitHub</text>
+        <text x="75" y="186" fill="#94a3b8" font-size="8" text-anchor="middle">source control</text>
+        <text x="75" y="198" fill="#94a3b8" font-size="7" text-anchor="middle">main branch</text>
+
+        <!-- GitHub Actions -->
+        <rect x="20" y="260" width="110" height="58" rx="6" fill="#0f172a"/>
+        <rect x="20" y="260" width="110" height="58" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="75" y="282" fill="white" font-size="11" font-weight="600" text-anchor="middle">GitHub Actions</text>
+        <text x="75" y="296" fill="#94a3b8" font-size="8" text-anchor="middle">CI Pipeline</text>
+        <text x="75" y="308" fill="#94a3b8" font-size="7" text-anchor="middle">7 parallel builds</text>
+
+        <!-- Terraform -->
+        <rect x="20" y="440" width="110" height="50" rx="6" fill="#0f172a"/>
+        <rect x="20" y="440" width="110" height="50" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="75" y="460" fill="white" font-size="11" font-weight="600" text-anchor="middle">Terraform</text>
+        <text x="75" y="474" fill="#94a3b8" font-size="8" text-anchor="middle">IaC Provisioning</text>
+        <text x="75" y="485" fill="#fbbf24" font-size="6" text-anchor="middle">VPC · EKS · ECR · ArgoCD</text>
+
+        <!-- =================================================================
+             AWS REGION BOUNDARY
+             ================================================================= -->
+        <rect x="170" y="30" width="920" height="710" rx="12" fill="rgba(251, 191, 36, 0.03)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="182" y="48" fill="#fbbf24" font-size="10" font-weight="600">AWS Region: us-east-1</text>
+
+        <!-- =================================================================
+             TOP AREA - Container Registry (ECR)
+             ================================================================= -->
+        <rect x="218" y="62" width="120" height="50" rx="6" fill="#0f172a"/>
+        <rect x="218" y="62" width="120" height="50" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="278" y="82" fill="white" font-size="11" font-weight="600" text-anchor="middle">Amazon ECR</text>
+        <text x="278" y="96" fill="#94a3b8" font-size="8" text-anchor="middle">7 image repos</text>
+        <text x="278" y="107" fill="#fbbf24" font-size="7" text-anchor="middle">commit SHA tags</text>
+
+        <!-- =================================================================
+             EKS CLUSTER BOUNDARY (dashed emerald/green)
+             ================================================================= -->
+        <rect x="195" y="135" width="870" height="400" rx="10" fill="rgba(52, 211, 153, 0.03)" stroke="#34d399" stroke-width="1" stroke-dasharray="6,4"/>
+        <text x="210" y="152" fill="#34d399" font-size="9" font-weight="600">EKS Cluster: boutique-cluster</text>
+
+        <!-- =================================================================
+             BOUTIQUE NAMESPACE
+             ================================================================= -->
+        <rect x="210" y="160" width="580" height="290" rx="8" fill="rgba(30, 41, 59, 0.15)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <text x="222" y="175" fill="#94a3b8" font-size="8" font-weight="500">namespace: boutique</text>
+
+        <!-- Frontend -->
+        <rect x="225" y="188" width="85" height="48" rx="6" fill="#0f172a"/>
+        <rect x="225" y="188" width="85" height="48" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="267" y="207" fill="white" font-size="10" font-weight="600" text-anchor="middle">Frontend</text>
+        <text x="267" y="220" fill="#94a3b8" font-size="7" text-anchor="middle">React :3000</text>
+        <text x="267" y="231" fill="#22d3ee" font-size="6" text-anchor="middle">Deployment</text>
+
+        <!-- Gateway -->
+        <rect x="370" y="188" width="90" height="48" rx="6" fill="#0f172a"/>
+        <rect x="370" y="188" width="90" height="48" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="415" y="207" fill="white" font-size="10" font-weight="600" text-anchor="middle">Gateway</text>
+        <text x="415" y="220" fill="#94a3b8" font-size="7" text-anchor="middle">Node.js :3001</text>
+        <text x="415" y="231" fill="#34d399" font-size="6" text-anchor="middle">API Router</text>
+
+        <!-- Auth -->
+        <rect x="510" y="183" width="100" height="42" rx="6" fill="#0f172a"/>
+        <rect x="510" y="183" width="100" height="42" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="560" y="200" fill="white" font-size="10" font-weight="600" text-anchor="middle">Auth</text>
+        <text x="560" y="213" fill="#94a3b8" font-size="7" text-anchor="middle">JWT+bcrypt :3002</text>
+        <text x="560" y="222" fill="#fb7185" font-size="6" text-anchor="middle">Security</text>
+
+        <!-- Product Service -->
+        <rect x="510" y="243" width="100" height="42" rx="6" fill="#0f172a"/>
+        <rect x="510" y="243" width="100" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="560" y="260" fill="white" font-size="10" font-weight="600" text-anchor="middle">Product Svc</text>
+        <text x="560" y="273" fill="#94a3b8" font-size="7" text-anchor="middle">:3003</text>
+
+        <!-- Order Service -->
+        <rect x="510" y="295" width="100" height="42" rx="6" fill="#0f172a"/>
+        <rect x="510" y="295" width="100" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="560" y="312" fill="white" font-size="10" font-weight="600" text-anchor="middle">Order Svc</text>
+        <text x="560" y="325" fill="#94a3b8" font-size="7" text-anchor="middle">:3004</text>
+
+        <!-- Orders -->
+        <rect x="510" y="347" width="100" height="42" rx="6" fill="#0f172a"/>
+        <rect x="510" y="347" width="100" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="560" y="364" fill="white" font-size="10" font-weight="600" text-anchor="middle">Orders</text>
+        <text x="560" y="377" fill="#94a3b8" font-size="7" text-anchor="middle">:3005</text>
+
+        <!-- User Service -->
+        <rect x="510" y="399" width="100" height="42" rx="6" fill="#0f172a"/>
+        <rect x="510" y="399" width="100" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="560" y="416" fill="white" font-size="10" font-weight="600" text-anchor="middle">User Svc</text>
+        <text x="560" y="429" fill="#94a3b8" font-size="7" text-anchor="middle">:3006</text>
+
+        <!-- PostgreSQL -->
+        <rect x="680" y="270" width="100" height="55" rx="6" fill="#0f172a"/>
+        <rect x="680" y="270" width="100" height="55" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="730" y="290" fill="white" font-size="10" font-weight="600" text-anchor="middle">PostgreSQL</text>
+        <text x="730" y="303" fill="#94a3b8" font-size="7" text-anchor="middle">StatefulSet :5432</text>
+        <text x="730" y="318" fill="#a78bfa" font-size="6" text-anchor="middle">boutique_db</text>
+
+        <!-- =================================================================
+             MONITORING NAMESPACE
+             ================================================================= -->
+        <rect x="800" y="470" width="250" height="70" rx="8" fill="rgba(30, 41, 59, 0.15)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <text x="812" y="484" fill="#94a3b8" font-size="8" font-weight="500">namespace: monitoring</text>
+
+        <!-- Prometheus -->
+        <rect x="810" y="490" width="100" height="42" rx="6" fill="#0f172a"/>
+        <rect x="810" y="490" width="100" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="860" y="507" fill="white" font-size="10" font-weight="600" text-anchor="middle">Prometheus</text>
+        <text x="860" y="520" fill="#94a3b8" font-size="7" text-anchor="middle">scrape /metrics</text>
+        <text x="860" y="529" fill="#34d399" font-size="6" text-anchor="middle">every 15s</text>
+
+        <!-- Grafana -->
+        <rect x="930" y="490" width="100" height="42" rx="6" fill="#0f172a"/>
+        <rect x="930" y="490" width="100" height="42" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="980" y="507" fill="white" font-size="10" font-weight="600" text-anchor="middle">Grafana</text>
+        <text x="980" y="520" fill="#94a3b8" font-size="7" text-anchor="middle">dashboards</text>
+        <text x="980" y="529" fill="#34d399" font-size="6" text-anchor="middle">visualization</text>
+
+        <!-- =================================================================
+             ARGOCD NAMESPACE
+             ================================================================= -->
+        <rect x="210" y="470" width="160" height="65" rx="8" fill="rgba(30, 41, 59, 0.15)" stroke="#475569" stroke-width="0.5" stroke-dasharray="4,4"/>
+        <text x="222" y="484" fill="#94a3b8" font-size="8" font-weight="500">namespace: argocd</text>
+
+        <!-- ArgoCD -->
+        <rect x="220" y="490" width="140" height="38" rx="6" fill="#0f172a"/>
+        <rect x="220" y="490" width="140" height="38" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="290" y="507" fill="white" font-size="10" font-weight="600" text-anchor="middle">ArgoCD</text>
+        <text x="290" y="520" fill="#94a3b8" font-size="7" text-anchor="middle">GitOps · watches main</text>
+
+        <!-- =================================================================
+             BOTTOM AREA - Observability + AIOps
+             ================================================================= -->
+
+        <!-- Fluent Bit -->
+        <rect x="195" y="590" width="115" height="45" rx="6" fill="#0f172a"/>
+        <rect x="195" y="590" width="115" height="45" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="252" y="608" fill="white" font-size="10" font-weight="600" text-anchor="middle">Fluent Bit</text>
+        <text x="252" y="621" fill="#94a3b8" font-size="7" text-anchor="middle">DaemonSet</text>
+        <text x="252" y="631" fill="#fbbf24" font-size="6" text-anchor="middle">ships pod logs</text>
+
+        <!-- CloudWatch -->
+        <rect x="440" y="590" width="120" height="50" rx="6" fill="#0f172a"/>
+        <rect x="440" y="590" width="120" height="50" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="500" y="610" fill="white" font-size="10" font-weight="600" text-anchor="middle">CloudWatch</text>
+        <text x="500" y="623" fill="#94a3b8" font-size="7" text-anchor="middle">/eks/boutique/pods</text>
+        <text x="500" y="634" fill="#fbbf24" font-size="6" text-anchor="middle">log group</text>
+
+        <!-- Lambda Functions -->
+        <rect x="640" y="650" width="100" height="60" rx="6" fill="#0f172a"/>
+        <rect x="640" y="650" width="100" height="60" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="690" y="668" fill="white" font-size="10" font-weight="600" text-anchor="middle">Lambda (x3)</text>
+        <text x="690" y="681" fill="#94a3b8" font-size="7" text-anchor="middle">fetch_logs</text>
+        <text x="690" y="692" fill="#94a3b8" font-size="7" text-anchor="middle">fetch_metrics</text>
+        <text x="690" y="703" fill="#94a3b8" font-size="7" text-anchor="middle">fetch_health</text>
+
+        <!-- AWS Bedrock -->
+        <rect x="800" y="655" width="120" height="50" rx="6" fill="#0f172a"/>
+        <rect x="800" y="655" width="120" height="50" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="860" y="675" fill="white" font-size="10" font-weight="600" text-anchor="middle">AWS Bedrock</text>
+        <text x="860" y="688" fill="#94a3b8" font-size="7" text-anchor="middle">Kira AIOps Agent</text>
+        <text x="860" y="699" fill="#fbbf24" font-size="6" text-anchor="middle">root cause analysis</text>
+
+        <!-- Streamlit UI -->
+        <rect x="960" y="655" width="110" height="50" rx="6" fill="#0f172a"/>
+        <rect x="960" y="655" width="110" height="50" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="1015" y="675" fill="white" font-size="10" font-weight="600" text-anchor="middle">Streamlit UI</text>
+        <text x="1015" y="688" fill="#94a3b8" font-size="7" text-anchor="middle">Engineer Chat</text>
+        <text x="1015" y="699" fill="#22d3ee" font-size="6" text-anchor="middle">Kira Interface</text>
+
+        <!-- =================================================================
+             LEGEND (outside all boundaries, bottom-right)
+             ================================================================= -->
+        <rect x="195" y="755" width="895" height="55" rx="8" fill="rgba(15, 23, 42, 0.6)" stroke="#1e293b" stroke-width="0.5"/>
+        <text x="210" y="772" fill="white" font-size="9" font-weight="600">Legend</text>
+
+        <rect x="210" y="782" width="14" height="10" rx="2" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1"/>
+        <text x="230" y="790" fill="#94a3b8" font-size="7">Frontend</text>
+
+        <rect x="290" y="782" width="14" height="10" rx="2" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1"/>
+        <text x="310" y="790" fill="#94a3b8" font-size="7">Backend</text>
+
+        <rect x="370" y="782" width="14" height="10" rx="2" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1"/>
+        <text x="390" y="790" fill="#94a3b8" font-size="7">Database</text>
+
+        <rect x="455" y="782" width="14" height="10" rx="2" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="475" y="790" fill="#94a3b8" font-size="7">AWS/Cloud</text>
+
+        <rect x="545" y="782" width="14" height="10" rx="2" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1"/>
+        <text x="565" y="790" fill="#94a3b8" font-size="7">Security</text>
+
+        <rect x="625" y="782" width="14" height="10" rx="2" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1"/>
+        <text x="645" y="790" fill="#94a3b8" font-size="7">External</text>
+
+        <line x1="710" y1="787" x2="730" y2="787" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="738" y="790" fill="#94a3b8" font-size="7">Data flow</text>
+
+        <line x1="800" y1="787" x2="820" y2="787" stroke="#64748b" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="828" y="790" fill="#94a3b8" font-size="7">Async / Poll</text>
+
+        <rect x="910" y="782" width="14" height="10" rx="2" fill="transparent" stroke="#34d399" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="930" y="790" fill="#94a3b8" font-size="7">Cluster boundary</text>
+
+      </svg>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot emerald"></div>
+          <h3>CI/CD Pipeline</h3>
+        </div>
+        <ul>
+          <li>• GitHub Actions CI with 7 parallel builds</li>
+          <li>• Docker images pushed to Amazon ECR</li>
+          <li>• Commit SHA used as image tags</li>
+          <li>• ArgoCD GitOps sync from main branch</li>
+          <li>• Rolling deployments to EKS cluster</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>Observability Stack</h3>
+        </div>
+        <ul>
+          <li>• Prometheus + Grafana monitoring</li>
+          <li>• ServiceMonitor scraping every 15s</li>
+          <li>• Fluent Bit DaemonSet log forwarding</li>
+          <li>• CloudWatch /eks/boutique/pods log group</li>
+          <li>• Pre-loaded Grafana dashboards</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot violet"></div>
+          <h3>AIOps — Kira</h3>
+        </div>
+        <ul>
+          <li>• AWS Bedrock Agent for analysis</li>
+          <li>• 3 Lambda tools: logs, metrics, health</li>
+          <li>• Streamlit chat UI for engineers</li>
+          <li>• Automated root cause analysis</li>
+          <li>• Evidence-backed diagnosis &amp; fixes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <p class="footer">
+      DevOps + AIOps Boutique Microservices • React + Node.js + PostgreSQL on AWS EKS
+    </p>
+  </div>
+</body>
+</html>
