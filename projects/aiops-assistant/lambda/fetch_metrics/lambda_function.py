@@ -1,9 +1,10 @@
 import json
+import os
 import urllib.request
 import urllib.parse
 from datetime import datetime
 
-PROMETHEUS_URL = "http://<YOUR_PROMETHEUS_ELB_URL>:9090"
+PROMETHEUS_URL = os.environ["PROMETHEUS_URL"]
 
 DEFAULT_NAMESPACE = "boutique"
 

@@ -6,7 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/vishakhasadhwani/DevOps-Practice-Guide.git'
+    # TODO: Replace with your own fork's URL before applying
+    repoURL: 'https://github.com/<YOUR_GITHUB_USERNAME>/devops-ai-playbook.git'
     targetRevision: main
     path: gitops
   destination:
