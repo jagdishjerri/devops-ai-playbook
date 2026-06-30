@@ -1,11 +1,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: boutique
+# NOTE: No global "namespace:" transformer here on purpose. Application resources
+# declare "namespace: boutique" explicitly, while the ServiceMonitor and Grafana
+# dashboard belong in the "monitoring" namespace. A global namespace override
+# would incorrectly relocate those monitoring resources into "boutique".
 
 resources:
   - namespace.yml
   - secrets.yml
+  - k8s/rbac.yml
+  - k8s/networkpolicy.yml
   - k8s/database/statefulset.yml
   - k8s/database/service.yml
   - k8s/backend/gateway.yml
@@ -20,6 +25,7 @@ resources:
 
 configMapGenerator:
   - name: boutique-db-dump
+    namespace: boutique
     files:
       - k8s/database/boutique_full.sql
 

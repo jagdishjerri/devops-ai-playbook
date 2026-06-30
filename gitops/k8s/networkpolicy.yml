@@ -1,0 +1,97 @@
+# Network segmentation for the boutique namespace.
+# Baseline is deny-all; traffic is then re-enabled explicitly:
+#   - DNS resolution (kube-system)
+#   - pod-to-pod traffic within the boutique namespace (service mesh of microservices)
+#   - metrics scraping from the monitoring namespace (Prometheus / ServiceMonitor)
+# Cross-namespace traffic that is not listed below is blocked.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: boutique
+  labels:
+    app.kubernetes.io/part-of: boutique
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-egress
+  namespace: boutique
+  labels:
+    app.kubernetes.io/part-of: boutique
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-internal-ingress
+  namespace: boutique
+  labels:
+    app.kubernetes.io/part-of: boutique
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-internal-egress
+  namespace: boutique
+  labels:
+    app.kubernetes.io/part-of: boutique
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector: {}
+---
+# Allow Prometheus (in the monitoring namespace) to scrape /metrics on the
+# backend services. Requires the monitoring namespace to carry the standard
+# kubernetes.io/metadata.name label (added automatically since Kubernetes 1.21).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-monitoring-ingress
+  namespace: boutique
+  labels:
+    app.kubernetes.io/part-of: boutique
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: backend
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: monitoring

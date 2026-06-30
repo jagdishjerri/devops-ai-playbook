@@ -3,8 +3,14 @@ kind: Deployment
 metadata:
   name: orders
   namespace: boutique
+  labels:
+    app: orders
+    app.kubernetes.io/name: orders
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: boutique
+    app.kubernetes.io/managed-by: kustomize
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: orders
@@ -12,15 +18,28 @@ spec:
     metadata:
       labels:
         app: orders
+        app.kubernetes.io/name: orders
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/part-of: boutique
     spec:
+      serviceAccountName: boutique-app-sa
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: orders
           image: <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/orders:1ebec3729cd10fe1eeac6f0858fba58e2da07956
           ports:
-            - containerPort: 3005
+            - name: http
+              containerPort: 3005
           env:
             - name: NODE_ENV
-              value: development
+              value: production
             - name: PORT
               value: "3005"
             - name: DATABASE_URL
@@ -30,19 +49,53 @@ spec:
                   key: ORDERS_DB_URL
             - name: PRODUCTS_SERVICE_URL
               value: "http://product-service:3003"
-
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
   name: orders
   namespace: boutique
+  labels:
+    app: orders
+    app.kubernetes.io/name: orders
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: boutique
 spec:
   selector:
     app: orders
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 3005
-      targetPort: 3005
+      targetPort: http
   type: ClusterIP

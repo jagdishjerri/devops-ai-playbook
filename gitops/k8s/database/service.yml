@@ -3,9 +3,16 @@ kind: Service
 metadata:
   name: boutique-postgres
   namespace: boutique
+  labels:
+    app: postgres
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: boutique
 spec:
   clusterIP: None
   selector:
     app: postgres
   ports:
-    - port: 5432
+    - name: postgres
+      port: 5432
+      targetPort: postgres

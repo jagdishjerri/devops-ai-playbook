@@ -1,0 +1,24 @@
+# Dedicated ServiceAccounts so workloads never use the namespace "default" SA.
+# These applications do not call the Kubernetes API, so they are granted no
+# Roles/RoleBindings at all (least privilege) and token automounting is
+# disabled on every pod that references them.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: boutique-app-sa
+  namespace: boutique
+  labels:
+    app.kubernetes.io/part-of: boutique
+    app.kubernetes.io/managed-by: kustomize
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: boutique-postgres-sa
+  namespace: boutique
+  labels:
+    app.kubernetes.io/part-of: boutique
+    app.kubernetes.io/component: database
+    app.kubernetes.io/managed-by: kustomize
+automountServiceAccountToken: false
